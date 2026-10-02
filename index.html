@@ -44,6 +44,51 @@
 
 
       <div class="controls">
+        <div class="translation-mode">
+
+  <div class="panel-label">
+    翻譯模式
+  </div>
+
+  <label class="mode-option">
+    <input
+      type="radio"
+      name="translationMode"
+      value="instant"
+      checked
+    >
+    即時翻譯
+  </label>
+
+  <label class="mode-option">
+    <input
+      type="radio"
+      name="translationMode"
+      value="buffer"
+    >
+    累積字數後翻譯
+  </label>
+
+  <div
+    id="bufferSetting"
+    class="buffer-setting"
+  >
+
+    累積
+
+    <input
+      id="bufferSize"
+      type="number"
+      min="10"
+      max="1000"
+      value="80"
+    >
+
+    個字後翻譯
+
+  </div>
+
+</div>
 
         <button
           id="startButton"
