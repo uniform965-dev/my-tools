@@ -35,52 +35,58 @@
 
 
     <main>
+
+      <!-- 登入區 -->
+
       <section
         id="loginPanel"
         class="tool-card"
       >
-      
+
         <div class="tool-title">
           🔐 工具登入
         </div>
-      
+
         <p>
           請輸入存取密碼
         </p>
-      
+
         <input
           id="passwordInput"
           type="password"
           placeholder="存取密碼"
           autocomplete="current-password"
         >
-      
+
         <button
           id="loginButton"
           class="start-button"
         >
           進入工具
         </button>
-      
+
         <div
           id="loginMessage"
           class="status"
         >
         </div>
-      
+
       </section>
 
-      <section class="tool-card">
 
+      <!-- 翻譯工具 -->
 
-        <!-- 工具標題 -->
+      <section
+        id="translatorPanel"
+        class="tool-card"
+        style="display:none;"
+      >
+
 
         <div class="tool-title">
           🎙 即時語音翻譯
         </div>
 
-
-        <!-- 狀態 -->
 
         <div
           id="status"
@@ -99,8 +105,6 @@
           </div>
 
 
-          <!-- 即時翻譯 -->
-
           <label class="mode-option">
 
             <input
@@ -115,8 +119,6 @@
           </label>
 
 
-          <!-- 累積字數翻譯 -->
-
           <label class="mode-option">
 
             <input
@@ -129,8 +131,6 @@
 
           </label>
 
-
-          <!-- 累積字數設定 -->
 
           <div
             id="bufferSetting"
@@ -267,7 +267,11 @@
 
       <!-- 其他工具 -->
 
-      <section class="future-tools">
+      <section
+        id="futureTools"
+        class="future-tools"
+        style="display:none;"
+      >
 
         <h2>
           其他工具
@@ -308,8 +312,6 @@
 
   </div>
 
-
-  <!-- JavaScript -->
 
   <script src="app.js"></script>
 
