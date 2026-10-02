@@ -1,5 +1,5 @@
 const GAS_URL =
-  "https://script.google.com/macros/s/你的部署ID/exec";
+  "https://script.google.com/macros/s/AKfycbya4sVzUa02qIJ8VmCvQXm2rmBopsRym2FxzqSWQW0MnEinUaDRdD_CKM97Xdt9Ke7slA/exec";
 
 
 /* =========================
