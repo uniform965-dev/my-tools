@@ -19,200 +19,265 @@
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <header class="header">
-    <h1>My Tools</h1>
-    <p>個人工具庫</p>
-  </header>
+    <header class="header">
+
+      <h1>
+        My Tools
+      </h1>
+
+      <p>
+        個人工具庫
+      </p>
+
+    </header>
 
 
-  <main>
+    <main>
 
-    <section class="tool-card">
+      <section class="tool-card">
 
-              <div class="tool-title">
-                🎙 即時語音翻譯
-              </div>
-        
-              <div
-                id="status"
-                class="status"
-              >
-                尚未開始
-              </div>
-        
-        
-              <div class="controls">
-                <div class="translation-mode">
-        
+
+        <!-- 工具標題 -->
+
+        <div class="tool-title">
+          🎙 即時語音翻譯
+        </div>
+
+
+        <!-- 狀態 -->
+
+        <div
+          id="status"
+          class="status"
+        >
+          尚未開始
+        </div>
+
+
+        <!-- 翻譯模式 -->
+
+        <div class="translation-mode">
+
           <div class="panel-label">
             翻譯模式
           </div>
-        
+
+
+          <!-- 即時翻譯 -->
+
           <label class="mode-option">
+
             <input
               type="radio"
               name="translationMode"
               value="instant"
               checked
             >
+
             即時翻譯
+
           </label>
-        
+
+
+          <!-- 累積字數翻譯 -->
+
           <label class="mode-option">
+
             <input
               type="radio"
               name="translationMode"
               value="buffer"
             >
+
             累積字數後翻譯
+
           </label>
-        
+
+
+          <!-- 累積字數設定 -->
+
           <div
             id="bufferSetting"
             class="buffer-setting"
           >
-        
+
             累積
-        
+
             <input
               id="bufferSize"
               type="number"
               min="10"
               max="1000"
+              step="10"
               value="80"
             >
-        
+
             個字後翻譯
-        
+
           </div>
-        
+
         </div>
 
-        <button
-          id="startButton"
-          class="start-button"
-        >
-          🎤 開始翻譯
-        </button>
 
-        <button
-          id="stopButton"
-          class="stop-button"
-          disabled
-        >
-          ⏹ 停止
-        </button>
+        <!-- 控制按鈕 -->
 
-      </div>
+        <div class="controls">
+
+          <button
+            id="startButton"
+            class="start-button"
+          >
+            🎤 開始翻譯
+          </button>
 
 
-      <div class="timer">
-        錄音時間：
-        <span id="timer">
-          00:00
-        </span>
-      </div>
+          <button
+            id="stopButton"
+            class="stop-button"
+            disabled
+          >
+            ⏹ 停止
+          </button>
 
-
-      <section class="panel">
-
-        <div class="panel-label">
-          即時辨識
         </div>
 
-        <div
-          id="interimText"
-          class="interim-text"
-        >
-          等待英文語音...
+
+        <!-- 錄音時間 -->
+
+        <div class="timer">
+
+          錄音時間：
+
+          <span id="timer">
+            00:00
+          </span>
+
         </div>
+
+
+        <!-- 即時辨識 -->
+
+        <section class="panel">
+
+          <div class="panel-label">
+            即時辨識
+          </div>
+
+          <div
+            id="interimText"
+            class="interim-text"
+          >
+            等待英文語音...
+          </div>
+
+        </section>
+
+
+        <!-- 英文逐字稿 -->
+
+        <section class="panel">
+
+          <div class="panel-label">
+            英文逐字稿
+          </div>
+
+          <div
+            id="englishText"
+            class="english-text"
+          >
+            尚無內容
+          </div>
+
+        </section>
+
+
+        <!-- 中文翻譯 -->
+
+        <section class="panel">
+
+          <div class="panel-label">
+            中文翻譯
+          </div>
+
+          <div
+            id="chineseText"
+            class="chinese-text"
+          >
+            尚無內容
+          </div>
+
+        </section>
+
+
+        <!-- 翻譯紀錄 -->
+
+        <section class="transcript-section">
+
+          <h2>
+            翻譯紀錄
+          </h2>
+
+          <div
+            id="transcript"
+            class="transcript"
+          >
+          </div>
+
+        </section>
+
 
       </section>
 
 
-      <section class="panel">
+      <!-- 其他工具 -->
 
-        <div class="panel-label">
-          英文逐字稿
-        </div>
-
-        <div
-          id="englishText"
-          class="english-text"
-        >
-          尚無內容
-        </div>
-
-      </section>
-
-
-      <section class="panel">
-
-        <div class="panel-label">
-          中文翻譯
-        </div>
-
-        <div
-          id="chineseText"
-          class="chinese-text"
-        >
-          尚無內容
-        </div>
-
-      </section>
-
-
-      <section>
+      <section class="future-tools">
 
         <h2>
-          翻譯紀錄
+          其他工具
         </h2>
 
-        <div
-          id="transcript"
-          class="transcript"
-        >
+
+        <div class="tool-grid">
+
+
+          <div class="future-card">
+
+            📝
+
+            <span>
+              歷史逐字稿
+            </span>
+
+          </div>
+
+
+          <div class="future-card">
+
+            🔧
+
+            <span>
+              未來功能
+            </span>
+
+          </div>
+
+
         </div>
 
       </section>
 
-    </section>
+
+    </main>
+
+  </div>
 
 
-    <section class="future-tools">
+  <!-- JavaScript -->
 
-      <h2>
-        其他工具
-      </h2>
-
-      <div class="tool-grid">
-
-        <div class="future-card">
-          📝
-          <span>
-            歷史逐字稿
-          </span>
-        </div>
-
-        <div class="future-card">
-          🔧
-          <span>
-            未來功能
-          </span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
-
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 
 </body>
 
