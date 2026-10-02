@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>My Tools</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <h1>My Tools</h1>
+    <p>個人工具庫</p>
+  </header>
+
+
+  <main>
+
+    <section class="tool-card">
+
+      <div class="tool-title">
+        🎙 即時語音翻譯
+      </div>
+
+      <div
+        id="status"
+        class="status"
+      >
+        尚未開始
+      </div>
+
+
+      <div class="controls">
+
+        <button
+          id="startButton"
+          class="start-button"
+        >
+          🎤 開始翻譯
+        </button>
+
+        <button
+          id="stopButton"
+          class="stop-button"
+          disabled
+        >
+          ⏹ 停止
+        </button>
+
+      </div>
+
+
+      <div class="timer">
+        錄音時間：
+        <span id="timer">
+          00:00
+        </span>
+      </div>
+
+
+      <section class="panel">
+
+        <div class="panel-label">
+          即時辨識
+        </div>
+
+        <div
+          id="interimText"
+          class="interim-text"
+        >
+          等待英文語音...
+        </div>
+
+      </section>
+
+
+      <section class="panel">
+
+        <div class="panel-label">
+          英文逐字稿
+        </div>
+
+        <div
+          id="englishText"
+          class="english-text"
+        >
+          尚無內容
+        </div>
+
+      </section>
+
+
+      <section class="panel">
+
+        <div class="panel-label">
+          中文翻譯
+        </div>
+
+        <div
+          id="chineseText"
+          class="chinese-text"
+        >
+          尚無內容
+        </div>
+
+      </section>
+
+
+      <section>
+
+        <h2>
+          翻譯紀錄
+        </h2>
+
+        <div
+          id="transcript"
+          class="transcript"
+        >
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <section class="future-tools">
+
+      <h2>
+        其他工具
+      </h2>
+
+      <div class="tool-grid">
+
+        <div class="future-card">
+          📝
+          <span>
+            歷史逐字稿
+          </span>
+        </div>
+
+        <div class="future-card">
+          🔧
+          <span>
+            未來功能
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
