@@ -1,3 +1,5 @@
+let accessPassword = "";
+
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbya4sVzUa02qIJ8VmCvQXm2rmBopsRym2FxzqSWQW0MnEinUaDRdD_CKM97Xdt9Ke7slA/exec";
 
@@ -7,11 +9,9 @@ const GAS_URL =
 ========================= */
 
 let recognition = null;
-
 let isRunning = false;
 
 let startTime = null;
-
 let timerInterval = null;
 
 let sessionId = "";
@@ -20,26 +20,49 @@ let finalEnglishText = "";
 
 let textBuffer = "";
 
-
-/*
- * 翻譯模式
- *
- * instant = 每一句 final 立即翻譯
- * buffer  = 累積指定字數後翻譯
- */
 let translationMode = "instant";
 
-
-/*
- * GAS 傳送 Queue
- */
 let translationQueue = [];
-
 let processingQueue = false;
 
 
 /* =========================
-   HTML 元件
+   登入 HTML 元件
+========================= */
+
+const loginPanel =
+  document.getElementById(
+    "loginPanel"
+  );
+
+const translatorPanel =
+  document.getElementById(
+    "translatorPanel"
+  );
+
+const futureTools =
+  document.getElementById(
+    "futureTools"
+  );
+
+const passwordInput =
+  document.getElementById(
+    "passwordInput"
+  );
+
+const loginButton =
+  document.getElementById(
+    "loginButton"
+  );
+
+const loginMessage =
+  document.getElementById(
+    "loginMessage"
+  );
+
+
+/* =========================
+   翻譯 HTML 元件
 ========================= */
 
 const startButton =
@@ -83,9 +106,10 @@ const transcriptElement =
   );
 
 
-/*
- * 翻譯模式 UI
- */
+/* =========================
+   翻譯模式 UI
+========================= */
+
 const modeInputs =
   document.querySelectorAll(
     'input[name="translationMode"]'
@@ -100,6 +124,159 @@ const bufferSizeInput =
   document.getElementById(
     "bufferSize"
   );
+
+
+/* =========================
+   登入功能
+========================= */
+
+function showLogin() {
+
+  loginPanel.style.display =
+    "block";
+
+  translatorPanel.style.display =
+    "none";
+
+  if (futureTools) {
+    futureTools.style.display =
+      "none";
+  }
+
+}
+
+
+function showTools() {
+
+  loginPanel.style.display =
+    "none";
+
+  translatorPanel.style.display =
+    "block";
+
+  if (futureTools) {
+    futureTools.style.display =
+      "block";
+  }
+
+}
+
+
+/*
+ * 登入
+ *
+ * 密碼不會寫死在 GitHub。
+ * 這裡只暫存在 sessionStorage。
+ */
+function login() {
+
+  const password =
+    passwordInput.value.trim();
+
+
+  if (!password) {
+
+    loginMessage.textContent =
+      "請輸入存取密碼";
+
+    return;
+  }
+
+
+  accessPassword =
+    password;
+
+
+  sessionStorage.setItem(
+    "myToolsAccessPassword",
+    password
+  );
+
+
+  loginMessage.textContent =
+    "";
+
+
+  showTools();
+
+}
+
+
+/*
+ * 登出
+ */
+function logout() {
+
+  sessionStorage.removeItem(
+    "myToolsAccessPassword"
+  );
+
+
+  accessPassword =
+    "";
+
+
+  passwordInput.value =
+    "";
+
+
+  showLogin();
+
+}
+
+
+/*
+ * 網頁載入時
+ * 檢查這個分頁之前有沒有登入
+ */
+const savedPassword =
+  sessionStorage.getItem(
+    "myToolsAccessPassword"
+  );
+
+
+if (savedPassword) {
+
+  accessPassword =
+    savedPassword;
+
+  showTools();
+
+}
+else {
+
+  showLogin();
+
+}
+
+
+/*
+ * Login Button
+ */
+loginButton.addEventListener(
+  "click",
+  login
+);
+
+
+/*
+ * 按 Enter 也可以登入
+ */
+passwordInput.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      login();
+
+    }
+
+  }
+);
 
 
 /* =========================
@@ -128,9 +305,6 @@ function createSessionId() {
 }
 
 
-/*
- * 取得目前設定的字數
- */
 function getBufferSize() {
 
   if (!bufferSizeInput) {
@@ -177,9 +351,6 @@ if (modeInputs.length > 0) {
             this.value;
 
 
-          /*
-           * Buffer 模式
-           */
           if (
             translationMode ===
             "buffer"
@@ -187,35 +358,25 @@ if (modeInputs.length > 0) {
 
             if (bufferSetting) {
 
-              bufferSetting
-                .style
-                .display =
-                  "block";
+              bufferSetting.style.display =
+                "block";
 
             }
 
           }
-
-
-          /*
-           * 即時模式
-           */
           else {
 
             if (bufferSetting) {
 
-              bufferSetting
-                .style
-                .display =
-                  "none";
+              bufferSetting.style.display =
+                "none";
 
             }
 
 
             /*
-             * 切換模式時，
-             * 如果 Buffer 還有內容，
-             * 先送出去避免遺失
+             * 如果之前 Buffer 還有文字，
+             * 切換模式前先送出去。
              */
             if (
               textBuffer.trim()
@@ -244,13 +405,10 @@ if (modeInputs.length > 0) {
 }
 
 
-/*
- * 預設即時模式時
- * 隱藏字數設定
- */
 if (
   bufferSetting &&
-  translationMode === "instant"
+  translationMode ===
+    "instant"
 ) {
 
   bufferSetting.style.display =
@@ -260,7 +418,7 @@ if (
 
 
 /* =========================
-   SpeechRecognition 建立
+   SpeechRecognition
 ========================= */
 
 function createSpeechRecognition() {
@@ -291,23 +449,14 @@ function createSpeechRecognition() {
     new SpeechRecognition();
 
 
-  /*
-   * 英文
-   */
   recognition.lang =
     "en-US";
 
 
-  /*
-   * 持續辨識
-   */
   recognition.continuous =
     true;
 
 
-  /*
-   * 顯示 interim result
-   */
   recognition.interimResults =
     true;
 
@@ -315,10 +464,6 @@ function createSpeechRecognition() {
   recognition.maxAlternatives =
     1;
 
-
-  /* -------------------------
-     Recognition Started
-  ------------------------- */
 
   recognition.onstart =
     function () {
@@ -330,14 +475,11 @@ function createSpeechRecognition() {
     };
 
 
-  /* -------------------------
-     Recognition Result
-  ------------------------- */
-
   recognition.onresult =
     function (event) {
 
-      let interimText = "";
+      let interimText =
+        "";
 
 
       for (
@@ -352,7 +494,7 @@ function createSpeechRecognition() {
 
 
         /*
-         * Final sentence
+         * Final
          */
         if (
           event.results[i].isFinal
@@ -367,24 +509,17 @@ function createSpeechRecognition() {
           }
 
 
-          /*
-           * 顯示完整英文逐字稿
-           */
           finalEnglishText +=
             finalText + " ";
 
 
-          englishTextElement
-            .textContent =
-              finalEnglishText
-                .trim();
+          englishTextElement.textContent =
+            finalEnglishText.trim();
 
 
-          /* =====================
-             模式 1：
-             每一句立即翻譯
-          ===================== */
-
+          /*
+           * 即時模式
+           */
           if (
             translationMode ===
             "instant"
@@ -399,11 +534,9 @@ function createSpeechRecognition() {
           }
 
 
-          /* =====================
-             模式 2：
-             累積指定字數
-          ===================== */
-
+          /*
+           * 累積模式
+           */
           else if (
             translationMode ===
             "buffer"
@@ -442,10 +575,6 @@ function createSpeechRecognition() {
 
         }
 
-
-        /*
-         * Interim result
-         */
         else {
 
           interimText +=
@@ -456,17 +585,12 @@ function createSpeechRecognition() {
       }
 
 
-      interimTextElement
-        .textContent =
-          interimText ||
-          "正在聆聽...";
+      interimTextElement.textContent =
+        interimText ||
+        "正在聆聽...";
 
     };
 
-
-  /* -------------------------
-     Recognition Error
-  ------------------------- */
 
   recognition.onerror =
     function (event) {
@@ -483,9 +607,6 @@ function createSpeechRecognition() {
       );
 
 
-      /*
-       * 麥克風權限問題
-       */
       if (
         event.error ===
           "not-allowed" ||
@@ -509,10 +630,6 @@ function createSpeechRecognition() {
     };
 
 
-  /* -------------------------
-     Recognition Ended
-  ------------------------- */
-
   recognition.onend =
     function () {
 
@@ -521,10 +638,6 @@ function createSpeechRecognition() {
       );
 
 
-      /*
-       * 使用者還在錄音狀態
-       * 就自動重啟
-       */
       if (isRunning) {
 
         setTimeout(
@@ -535,7 +648,6 @@ function createSpeechRecognition() {
               recognition.start();
 
             }
-
             catch (error) {
 
               console.error(
@@ -568,7 +680,8 @@ async function requestMicrophonePermission() {
 
   if (
     !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
+    !navigator.mediaDevices
+      .getUserMedia
   ) {
 
     throw new Error(
@@ -578,9 +691,6 @@ async function requestMicrophonePermission() {
   }
 
 
-  /*
-   * 取得 microphone permission
-   */
   const stream =
     await navigator.mediaDevices
       .getUserMedia({
@@ -588,10 +698,6 @@ async function requestMicrophonePermission() {
       });
 
 
-  /*
-   * SpeechRecognition 會自行使用麥克風
-   * 所以這個 stream 可以關閉
-   */
   stream
     .getTracks()
     .forEach(
@@ -608,6 +714,21 @@ async function requestMicrophonePermission() {
 
 async function startRecognition() {
 
+  /*
+   * 沒登入就不允許使用
+   */
+  if (!accessPassword) {
+
+    alert(
+      "請先登入"
+    );
+
+    showLogin();
+
+    return;
+  }
+
+
   if (isRunning) {
     return;
   }
@@ -623,7 +744,6 @@ async function startRecognition() {
     await requestMicrophonePermission();
 
   }
-
   catch (error) {
 
     console.error(error);
@@ -644,9 +764,6 @@ async function startRecognition() {
   }
 
 
-  /*
-   * 第一次使用建立 recognition
-   */
   if (!recognition) {
 
     const success =
@@ -660,16 +777,10 @@ async function startRecognition() {
   }
 
 
-  /*
-   * 新 Session
-   */
   sessionId =
     createSessionId();
 
 
-  /*
-   * 清空本次資料
-   */
   finalEnglishText =
     "";
 
@@ -702,9 +813,6 @@ async function startRecognition() {
     "";
 
 
-  /*
-   * 開始狀態
-   */
   isRunning =
     true;
 
@@ -729,7 +837,6 @@ async function startRecognition() {
     recognition.start();
 
   }
-
   catch (error) {
 
     console.error(
@@ -757,9 +864,6 @@ async function stopRecognition() {
     false;
 
 
-  /*
-   * 停止 SpeechRecognition
-   */
   if (recognition) {
 
     try {
@@ -767,7 +871,6 @@ async function stopRecognition() {
       recognition.stop();
 
     }
-
     catch (error) {
 
       console.error(error);
@@ -778,8 +881,8 @@ async function stopRecognition() {
 
 
   /*
-   * Buffer 模式如果還有文字，
-   * 停止時一定補送
+   * Buffer 模式剩餘內容
+   * 停止時補送
    */
   if (
     translationMode ===
@@ -825,9 +928,6 @@ async function stopRecognition() {
     "已停止";
 
 
-  /*
-   * 如果 Queue 還有資料
-   */
   if (
     processingQueue ||
     translationQueue.length > 0
@@ -838,7 +938,6 @@ async function stopRecognition() {
     );
 
   }
-
   else {
 
     updateStatus(
@@ -851,7 +950,7 @@ async function stopRecognition() {
 
 
 /* =========================
-   加入翻譯 Queue
+   Queue
 ========================= */
 
 function queueTranslation(
@@ -885,24 +984,19 @@ function queueTranslation(
 
 
 /* =========================
-   GAS Queue 處理
+   GAS Queue
 ========================= */
 
 async function processTranslationQueue() {
 
-  /*
-   * 已經在翻譯
-   */
   if (processingQueue) {
     return;
   }
 
 
-  /*
-   * Queue 空
-   */
   if (
-    translationQueue.length === 0
+    translationQueue.length ===
+    0
   ) {
 
     if (!isRunning) {
@@ -922,9 +1016,6 @@ async function processTranslationQueue() {
     true;
 
 
-  /*
-   * 取第一筆
-   */
   const item =
     translationQueue.shift();
 
@@ -954,6 +1045,13 @@ async function processTranslationQueue() {
           body:
             JSON.stringify({
 
+              /*
+               * 新增：
+               * 每一次翻譯都附上密碼
+               */
+              accessPassword:
+                accessPassword,
+
               sessionId:
                 sessionId,
 
@@ -972,9 +1070,6 @@ async function processTranslationQueue() {
       );
 
 
-    /*
-     * HTTP 錯誤
-     */
     if (!response.ok) {
 
       throw new Error(
@@ -985,9 +1080,6 @@ async function processTranslationQueue() {
     }
 
 
-    /*
-     * GAS JSON
-     */
     const result =
       await response.json();
 
@@ -999,8 +1091,68 @@ async function processTranslationQueue() {
 
 
     /*
-     * GAS 回傳錯誤
+     * 密碼錯誤
      */
+    if (
+      result.error ===
+      "ACCESS_DENIED"
+    ) {
+
+      sessionStorage.removeItem(
+        "myToolsAccessPassword"
+      );
+
+
+      accessPassword =
+        "";
+
+
+      /*
+       * 停止錄音
+       */
+      isRunning =
+        false;
+
+
+      if (recognition) {
+
+        try {
+
+          recognition.stop();
+
+        }
+        catch (error) {
+
+          console.error(error);
+
+        }
+
+      }
+
+
+      clearInterval(
+        timerInterval
+      );
+
+
+      showLogin();
+
+
+      passwordInput.value =
+        "";
+
+
+      loginMessage.textContent =
+        "密碼錯誤，請重新輸入";
+
+
+      throw new Error(
+        "ACCESS_DENIED"
+      );
+
+    }
+
+
     if (!result.success) {
 
       throw new Error(
@@ -1011,16 +1163,10 @@ async function processTranslationQueue() {
     }
 
 
-    /*
-     * 顯示最新中文
-     */
     chineseTextElement.textContent =
       result.chinese;
 
 
-    /*
-     * 加入翻譯紀錄
-     */
     addTranscript(
       result.english,
       result.chinese,
@@ -1038,7 +1184,6 @@ async function processTranslationQueue() {
     }
 
   }
-
   catch (error) {
 
     console.error(
@@ -1047,29 +1192,34 @@ async function processTranslationQueue() {
     );
 
 
-    updateStatus(
-      "翻譯連線失敗"
-    );
-
-
     /*
-     * 暫時失敗時，
-     * 把這筆放回 Queue 最前面
+     * ACCESS_DENIED 不要重新排入 Queue
      */
-    translationQueue.unshift(
-      item
-    );
+    if (
+      error.message !==
+      "ACCESS_DENIED"
+    ) {
+
+      updateStatus(
+        "翻譯連線失敗"
+      );
 
 
-    /*
-     * 避免一直瘋狂重送
-     */
-    await delay(
-      2000
-    );
+      /*
+       * 暫時失敗重新排入
+       */
+      translationQueue.unshift(
+        item
+      );
+
+
+      await delay(
+        2000
+      );
+
+    }
 
   }
-
   finally {
 
     processingQueue =
@@ -1079,8 +1229,13 @@ async function processTranslationQueue() {
 
 
   /*
-   * 還有下一筆
+   * 已經登出就停止 Queue
    */
+  if (!accessPassword) {
+    return;
+  }
+
+
   if (
     translationQueue.length > 0
   ) {
@@ -1091,7 +1246,6 @@ async function processTranslationQueue() {
     );
 
   }
-
   else {
 
     if (isRunning) {
@@ -1101,7 +1255,6 @@ async function processTranslationQueue() {
       );
 
     }
-
     else {
 
       updateStatus(
@@ -1116,7 +1269,7 @@ async function processTranslationQueue() {
 
 
 /* =========================
-   翻譯紀錄顯示
+   翻譯紀錄
 ========================= */
 
 function addTranscript(
@@ -1136,9 +1289,6 @@ function addTranscript(
     "transcript-item";
 
 
-  /*
-   * 時間
-   */
   const timeDiv =
     document.createElement(
       "div"
@@ -1154,9 +1304,6 @@ function addTranscript(
       .toLocaleTimeString();
 
 
-  /*
-   * English
-   */
   const englishDiv =
     document.createElement(
       "div"
@@ -1171,9 +1318,6 @@ function addTranscript(
     english;
 
 
-  /*
-   * Chinese
-   */
   const chineseDiv =
     document.createElement(
       "div"
@@ -1188,9 +1332,6 @@ function addTranscript(
     chinese;
 
 
-  /*
-   * Debug / mode info
-   */
   const infoDiv =
     document.createElement(
       "div"
@@ -1222,9 +1363,6 @@ function addTranscript(
     " 字元";
 
 
-  /*
-   * 組裝
-   */
   item.appendChild(
     timeDiv
   );
@@ -1245,9 +1383,6 @@ function addTranscript(
   );
 
 
-  /*
-   * 最新翻譯放最上方
-   */
   transcriptElement.prepend(
     item
   );
@@ -1338,7 +1473,7 @@ function delay(ms) {
 
 
 /* =========================
-   Button Events
+   Buttons
 ========================= */
 
 startButton.addEventListener(
