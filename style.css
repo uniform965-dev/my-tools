@@ -5,22 +5,36 @@
 body {
   margin: 0;
   padding: 0;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Roboto,
     sans-serif;
+
   background: #f5f5f7;
   color: #111;
 }
 
+
+/* =========================
+   主容器
+========================= */
+
 .app {
   width: 100%;
   max-width: 760px;
+
   margin: 0 auto;
+
   padding: 20px;
 }
+
+
+/* =========================
+   Header
+========================= */
 
 .header {
   margin-bottom: 24px;
@@ -28,178 +42,158 @@ body {
 
 .header h1 {
   margin: 0;
+
   font-size: 32px;
 }
 
 .header p {
   margin: 6px 0 0;
+
   color: #666;
+
   font-size: 15px;
 }
 
+
+/* =========================
+   卡片
+========================= */
+
 .tool-card {
   background: #ffffff;
+
   border-radius: 20px;
+
   padding: 20px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+
+  box-shadow:
+    0 6px 24px
+    rgba(0, 0, 0, 0.06);
 }
 
 .tool-title {
   font-size: 24px;
+
   font-weight: 700;
+
   margin-bottom: 10px;
 }
 
+
+/* =========================
+   登入區
+========================= */
+
+#loginPanel {
+  max-width: 460px;
+
+  margin: 0 auto;
+}
+
+#loginPanel p {
+  margin-top: 8px;
+  margin-bottom: 10px;
+
+  color: #555;
+
+  font-size: 15px;
+}
+
+#passwordInput {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  margin-top: 8px;
+  margin-bottom: 14px;
+
+  border: 1px solid #d1d1d6;
+
+  border-radius: 12px;
+
+  font-size: 17px;
+
+  background: #ffffff;
+
+  color: #111;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+#passwordInput:focus {
+  border-color: #007aff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(0, 122, 255, 0.12);
+}
+
+#loginButton {
+  width: 100%;
+
+  margin-bottom: 12px;
+}
+
+#loginMessage {
+  margin-top: 8px;
+  margin-bottom: 0;
+
+  text-align: center;
+
+  color: #ff3b30;
+
+  min-height: 20px;
+}
+
+
+/* =========================
+   翻譯工具區
+========================= */
+
+#translatorPanel {
+  margin-top: 0;
+}
+
+
+/* =========================
+   狀態
+========================= */
+
 .status {
   margin-bottom: 18px;
+
   color: #666;
+
   font-size: 14px;
 }
 
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
 
-button {
-  border: none;
-  border-radius: 14px;
-  padding: 16px;
-  font-size: 17px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.start-button {
-  background: #007aff;
-  color: white;
-}
-
-.stop-button {
-  background: #ff3b30;
-  color: white;
-}
-
-.timer {
-  margin-top: 18px;
-  font-size: 15px;
-  color: #444;
-}
-
-.panel {
-  margin-top: 18px;
-  padding: 16px;
-  background: #f8f8fa;
-  border-radius: 16px;
-  min-height: 110px;
-}
-
-.panel-label {
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #777;
-}
-
-.interim-text {
-  color: #777;
-  font-size: 17px;
-  line-height: 1.6;
-}
-
-.english-text,
-.chinese-text {
-  font-size: 17px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-}
-
-.chinese-text {
-  color: #007aff;
-}
-
-.transcript {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.transcript-item {
-  padding: 16px;
-  background: #f8f8fa;
-  border-radius: 16px;
-}
-
-.transcript-time {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 6px;
-}
-
-.transcript-english {
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.transcript-chinese {
-  margin-top: 8px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #007aff;
-}
-
-.future-tools {
-  margin-top: 28px;
-}
-
-.future-tools h2 {
-  font-size: 20px;
-  margin-bottom: 14px;
-}
-
-.tool-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.future-card {
-  min-height: 120px;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 20px;
-  font-size: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-
-.future-card span {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-}
+/* =========================
+   翻譯模式
+========================= */
 
 .translation-mode {
   margin-top: 18px;
   margin-bottom: 18px;
+
   padding: 16px;
+
   background: #f8f8fa;
+
   border-radius: 16px;
 }
 
 .mode-option {
   display: block;
+
   margin-top: 10px;
+
   font-size: 16px;
+
   cursor: pointer;
 }
 
@@ -207,21 +201,180 @@ button:disabled {
   margin-right: 8px;
 }
 
+
+/* =========================
+   Buffer 設定
+========================= */
+
 .buffer-setting {
   margin-top: 12px;
+
   padding-left: 24px;
+
   font-size: 15px;
+
   color: #555;
 }
 
 .buffer-setting input {
   width: 90px;
+
   padding: 8px 10px;
+
   margin: 0 6px;
+
   border: 1px solid #ccc;
+
   border-radius: 8px;
+
   font-size: 16px;
+
+  background: #fff;
+
+  color: #111;
+
+  outline: none;
 }
+
+.buffer-setting input:focus {
+  border-color: #007aff;
+}
+
+
+/* =========================
+   控制按鈕
+========================= */
+
+.controls {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 12px;
+}
+
+button {
+  border: none;
+
+  border-radius: 14px;
+
+  padding: 16px;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.start-button {
+  background: #007aff;
+
+  color: white;
+}
+
+.stop-button {
+  background: #ff3b30;
+
+  color: white;
+}
+
+
+/* =========================
+   Timer
+========================= */
+
+.timer {
+  margin-top: 18px;
+
+  font-size: 15px;
+
+  color: #444;
+}
+
+
+/* =========================
+   內容 Panel
+========================= */
+
+.panel {
+  margin-top: 18px;
+
+  padding: 16px;
+
+  background: #f8f8fa;
+
+  border-radius: 16px;
+
+  min-height: 110px;
+}
+
+.panel-label {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #777;
+}
+
+
+/* =========================
+   即時辨識
+========================= */
+
+.interim-text {
+  color: #777;
+
+  font-size: 17px;
+
+  line-height: 1.6;
+
+  word-break: break-word;
+}
+
+
+/* =========================
+   英文 / 中文
+========================= */
+
+.english-text,
+.chinese-text {
+  font-size: 17px;
+
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+.chinese-text {
+  color: #007aff;
+}
+
+
+/* =========================
+   翻譯紀錄
+========================= */
 
 .transcript-section {
   margin-top: 24px;
@@ -229,37 +382,234 @@ button:disabled {
 
 .transcript-section h2 {
   font-size: 20px;
+
   margin-bottom: 14px;
 }
 
+.transcript {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.transcript-item {
+  padding: 16px;
+
+  background: #f8f8fa;
+
+  border-radius: 16px;
+}
+
+.transcript-time {
+  font-size: 12px;
+
+  color: #999;
+
+  margin-bottom: 6px;
+}
+
+.transcript-english {
+  font-size: 16px;
+
+  line-height: 1.6;
+
+  word-break: break-word;
+}
+
+.transcript-chinese {
+  margin-top: 8px;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+
+  color: #007aff;
+
+  word-break: break-word;
+}
+
+
+/* =========================
+   其他工具
+========================= */
+
+.future-tools {
+  margin-top: 28px;
+}
+
+.future-tools h2 {
+  font-size: 20px;
+
+  margin-bottom: 14px;
+}
+
+.tool-grid {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 12px;
+}
+
+.future-card {
+  min-height: 120px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  font-size: 30px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  box-shadow:
+    0 6px 20px
+    rgba(0, 0, 0, 0.05);
+}
+
+.future-card span {
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #333;
+}
+
+
+/* =========================
+   iPhone / 手機
+========================= */
+
 @media (max-width: 600px) {
+
   .app {
     padding: 14px;
   }
+
+
+  .header {
+    margin-bottom: 18px;
+  }
+
 
   .header h1 {
     font-size: 28px;
   }
 
+
   .tool-card {
     padding: 16px;
+
     border-radius: 18px;
   }
+
 
   .tool-title {
     font-size: 22px;
   }
 
-  .controls {
-    grid-template-columns: 1fr;
+
+  #loginPanel {
+    max-width: 100%;
   }
+
+
+  #passwordInput {
+    font-size: 16px;
+  }
+
+
+  .controls {
+    grid-template-columns:
+      1fr;
+  }
+
 
   button {
     width: 100%;
+
     font-size: 18px;
   }
 
-  .tool-grid {
-    grid-template-columns: 1fr 1fr;
+
+  .translation-mode {
+    padding: 14px;
   }
+
+
+  .buffer-setting {
+    padding-left: 0;
+
+    line-height: 2;
+  }
+
+
+  .buffer-setting input {
+    width: 85px;
+  }
+
+
+  .panel {
+    padding: 14px;
+
+    min-height: 100px;
+  }
+
+
+  .english-text,
+  .chinese-text,
+  .interim-text {
+    font-size: 16px;
+  }
+
+
+  .tool-grid {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+
+  .future-card {
+    min-height: 105px;
+
+    padding: 16px;
+
+    font-size: 26px;
+  }
+
+}
+
+
+/* =========================
+   很窄的小螢幕
+========================= */
+
+@media (max-width: 380px) {
+
+  .tool-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .buffer-setting {
+    font-size: 14px;
+  }
+
+
+  .buffer-setting input {
+    width: 75px;
+  }
+
 }
